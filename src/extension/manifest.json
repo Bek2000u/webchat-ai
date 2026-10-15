@@ -1,0 +1,80 @@
+{
+  "manifest_version": 3,
+  "default_locale": "ru",
+  "name": "Chat2API Companion",
+  "version": "1.0.0",
+  "description": "Connects your authenticated Chrome profile to Chat2API.",
+  "minimum_chrome_version": "116",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxg/mW3dvx2mZScoEhLR7gbkKl1QVhIMku8fKLvfLJ8Xr+FrNhdH5gaB+tPvgVJeCB+jjHd6AD5yRrbJdNr+RIJnPNb1CQiDuKVgu37QgdGd2/Og7OjdFEs9uFS/M1aRnYlycaHYWJbJZttuFVlTQHQRIiCizA5IyKRBMBOVGBrcqDKvloIV4pFnA+44h4KY/BvkaAxm3pF/KPhBFrid7SL0salDLwlB8OueTLAMvF9nkaLnb7qPSRiQXLoand6tVfu3wFcGlL1Wm8aKF/BP8nDD8pinDkiRNT1hv+mIKLTpOvr+dP7cbg8LkguWfMWBDRUcsB6XdNjAbP6sffNQFOwIDAQAB",
+  "permissions": [
+    "storage",
+    "identity",
+    "identity.email",
+    "tabs",
+    "scripting",
+    "debugger",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://gemini.google.com/*",
+    "https://chat.qwen.ai/*",
+    "https://chat.deepseek.com/*",
+    "https://flow.google.com/*",
+    "https://docs.google.com/*",
+    "https://contribution-qw.usercontent.google.com/*",
+    "https://accounts.google.com/*",
+    "https://www.google.com/*",
+    "https://*.googleusercontent.com/*",
+    "https://*.googleapis.com/*",
+    "https://*.gstatic.com/*",
+    "https://*.googlevideo.com/*",
+    "https://*.ggpht.com/*",
+    "https://flow-content.google/*",
+    "https://*.flow-content.google/*",
+    "http://127.0.0.1/*"
+  ],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://flow.google.com/*"
+      ],
+      "js": [
+        "flow-native-captcha.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://docs.google.com/videos/*"
+      ],
+      "js": [
+        "google-vids-capture.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_popup": "options.html"
+  },
+  "options_page": "options.html"
+}

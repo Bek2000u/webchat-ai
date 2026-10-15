@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Chat2API Companion</title></head>
+<body><main>
+  <header><h1>Chat2API Companion</h1><span id="extensionVersion" class="version muted"></span></header>
+  <p class="lead muted" data-i18n="description"></p>
+  <section class="connection" aria-labelledby="connectionHeading">
+    <div class="connection-heading"><h2 id="connectionHeading" data-i18n="connection"></h2><span id="clientStatus" class="connection-status" role="status" aria-live="polite"></span></div>
+    <form id="connectionForm"><label for="serverOrigin" data-i18n="apiAddress"></label>
+      <div class="address-row"><input id="serverOrigin" type="url" spellcheck="false" autocomplete="off" required placeholder="http://127.0.0.1:8001"><button id="saveConnection" class="primary" type="submit" data-i18n="save"></button></div>
+    </form>
+    <p id="connectionError" class="message error" role="status" hidden></p>
+    <p id="clientMessage" class="message" role="status" hidden></p>
+  </section>
+  <section aria-labelledby="providersHeading"><div class="section-heading"><h2 id="providersHeading" data-i18n="providers"></h2>
+    <button id="refreshStatus" class="icon" type="button" data-i18n-label="refreshStatus"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M5.1 8a7 7 0 0 1 11.5-3L20 8M4 16l3.4 3A7 7 0 0 0 19 16"/></svg></button>
+  </div><ul id="providers" class="providers"></ul></section>
+  <footer><span id="profileLabel"><span data-i18n="profile"></span> <span id="clientEmail"></span></span><a id="openApp" target="_blank" rel="noopener noreferrer" data-i18n="openApp"></a></footer>
+</main>
+<template id="providerTemplate"><li class="provider">
+  <div class="provider-line"><span class="provider-state" role="img"></span><span class="provider-name"><span class="name"></span><span class="tier"></span></span>
+    <div class="provider-tools">
+      <button class="open icon" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 3h7v7M10 14 21 3M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></svg></button>
+      <button class="sync icon" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M5.1 8a7 7 0 0 1 11.5-3L20 8M4 16l3.4 3A7 7 0 0 0 19 16"/></svg></button>
+      <button class="toggle switch" role="switch" aria-checked="false" type="button"></button>
+    </div>
+  </div><p class="provider-message error" hidden></p>
+</li></template>
+<script type="module" src="../../options.ts"></script></body></html>

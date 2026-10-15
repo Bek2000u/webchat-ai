@@ -1,0 +1,54 @@
+name: CI
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: browser2api-ci-${{ github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  typescript:
+    name: TypeScript, Server, Extension, Web and Desktop
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: browser-companion-${{ github.sha }}
+          path: dist/extension/chrome-mv3
+          if-no-files-found: error
+          retention-days: 14
+  release:
+    name: GitHub Release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [typescript]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: browser-companion-${{ github.sha }}
+          path: extension-dist
+      - name: Package and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd extension-dist
+          zip -qr "../browser-companion-${GITHUB_REF_NAME}.zip" .
+          cd ..
+          gh release create "$GITHUB_REF_NAME" "browser-companion-${GITHUB_REF_NAME}.zip" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes --title "Browser2API ${GITHUB_REF_NAME}"
