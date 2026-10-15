@@ -366,7 +366,7 @@ export function createGoogleVidsAdapter({
         },
       );
       const blob = joinGoogleVidsWavsBlob(wavs),
-        url = "browser2api-audio://" + this.context.requestId;
+        url = "webchat-ai-audio://" + this.context.requestId;
       blobs.set(url, blob);
       return {
         id: this.context.requestId,
@@ -388,7 +388,7 @@ export function createGoogleVidsAdapter({
       return { body: blob, mimeType: blob.type, size: blob.size };
     },
     async cancel(requestId) {
-      blobs.delete("browser2api-audio://" + requestId);
+      blobs.delete("webchat-ai-audio://" + requestId);
       await transport.cancel(requestId);
     },
   };

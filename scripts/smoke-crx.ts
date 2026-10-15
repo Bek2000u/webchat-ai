@@ -8,7 +8,7 @@ import { chromium, type BrowserContext } from "playwright";
 /// <reference types="chrome" />
 /** Real Chromium + MV3 fixture; intercepts ALL web traffic. No provider requests. */
 
-const temporary = await mkdtemp(join(tmpdir(), "browser2api-crx-smoke-"));
+const temporary = await mkdtemp(join(tmpdir(), "webchat-ai-crx-smoke-"));
 const extension = join(temporary, "extension");
 await mkdir(extension);
 await writeFile(

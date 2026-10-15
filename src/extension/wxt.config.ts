@@ -11,7 +11,7 @@ const base = JSON.parse(
 );
 const overlay = dev
   ? {
-      name: "Chat2API Companion Dev",
+      name: "WebChat AI Companion Dev",
       version_name: `${base.version}-dev`,
       description: "Isolated local companion for real provider driver testing.",
       key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt+s/kfWARWxW6U2fJT//lbmGUoAhA0kyVRHv16C9iC9ypxpuRfcHTaTw+Kd2FQtMRG7B8Dvqg5ayLPMqPYwfg3iUPejb0ZYGj4Mj9W+KmCaAmwqFy4+S/fqLHfnw91cU0+VbxGqxIz9DzUF7eiZ75UF+KCgHsRzCcAsJORDYWHcaTbJ/F3E4kndhuspnP/jFNCEpHCiFeUKYQbdyScB6LDGHRxcZ2YKlYhqcdB9727whDIhS13tviLFJ+WPcZC+V1M7+rqereXY+xlfaArI5Q5yuihbFd+zyA/q0djVULgVC1kmhbhIlzNVV+AFiA1sAgSJ+PX/qbHg15GFBcKHVHQIDAQAB",

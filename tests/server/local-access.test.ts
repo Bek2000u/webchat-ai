@@ -22,7 +22,7 @@ test("local UI opens without login but rejects hostile origins, opaque frames an
   await assert.rejects(startApi({HOST:"0.0.0.0"}),/loopback/);
 });
 test("media signing survives restart without owner credentials and never replaces a corrupt key", async () => {
-  const dir=await mkdtemp(join(tmpdir(),"chat2api-media-key-"));
+  const dir=await mkdtemp(join(tmpdir(),"webchat-ai-media-key-"));
   try {
     const first=await fileSigningSecret(dir);
     assert.equal(await fileSigningSecret(dir),first);

@@ -1,4 +1,4 @@
-# Chat2API agent contract
+# WebChat AI agent contract
 
 ## Язык и стиль
 
@@ -12,4 +12,4 @@
   PLAN.md — этапы hardcut. План не выдавать за готовую реализацию.
 - donors/ — read-only reference; не переносить их приложение/proxy/token store.
 - Внешний контракт — OpenAI-compatible как в Hebo; LLM — Vercel, media — TanStack.
-- Chat2API самостоятельный: Hebo только reference, без его dependency/imports.
+- WebChat AI самостоятельный: Hebo только reference, без его dependency/imports.

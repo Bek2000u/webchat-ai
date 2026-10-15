@@ -28,5 +28,5 @@ export const appRoutes: AppRoute[] = [
 ];
 
 export function routeTitle(pathname: string) {
-  return appRoutes.find((route) => route.path === pathname)?.label ?? "Chat2API";
+  return appRoutes.find((route) => route.path === pathname)?.label ?? "WebChat AI";
 }

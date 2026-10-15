@@ -8,8 +8,8 @@ export function Header({loading, failed, onMenu, onReload}: Props) {
   return <header className="border-b bg-background relative z-30 flex h-14 shrink-0 items-center justify-between gap-3 px-4">
     <div className="flex min-w-0 items-center gap-3">
       <button className="md:hidden rounded-lg p-2" onClick={onMenu} aria-label="Открыть меню"><Menu className="size-5" /></button>
-      <img src="/chat2api.png" alt="" className="size-8 object-contain" />
-      <span className="text-lg font-bold tracking-tight">Chat2API</span>
+      <img src="/webchat-ai.png" alt="" className="size-8 object-contain" />
+      <span className="text-lg font-bold tracking-tight">WebChat AI</span>
     </div>
     <div className="flex items-center gap-2 sm:gap-4">
       <button className="rounded-lg p-2 hover:bg-muted" onClick={toggleTheme} aria-label={theme === "dark" ? "Включить светлую тему" : "Включить тёмную тему"}>

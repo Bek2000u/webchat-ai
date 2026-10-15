@@ -9,12 +9,12 @@ import { modelSpec } from "../../shared/contracts.js";
 
 export function SettingsPage() {
   const { systemInfo, serverConfig, reloadApiKeys } = useAppDataContext();
-  const [desktop, setDesktop] = useState<Awaited<ReturnType<NonNullable<Window["chat2api"]>["getInfo"]>>>();
+  const [desktop, setDesktop] = useState<Awaited<ReturnType<NonNullable<Window["webchatAI"]>["getInfo"]>>>();
   const [order, setOrder] = useState<string[] | null>(null);
   const [savedOrder, setSavedOrder] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
-  useEffect(() => { void window.chat2api?.getInfo().then(setDesktop).catch(() => toast.error("Не удалось прочитать настройки Desktop")); }, []);
+  useEffect(() => { void window.webchatAI?.getInfo().then(setDesktop).catch(() => toast.error("Не удалось прочитать настройки Desktop")); }, []);
   useEffect(() => {
     if (!serverConfig) return;
     setOrder([...serverConfig.textProviderOrder]);
@@ -69,10 +69,10 @@ export function SettingsPage() {
     <Card><CardHeader><CardTitle className="flex items-center gap-2"><Server className="size-4" />Локальный API</CardTitle><CardDescription>Тот же host для Desktop и клиентских приложений</CardDescription></CardHeader>
       <CardContent className="space-y-3 text-sm"><p className="break-all rounded-lg bg-muted p-3 font-mono">{desktop?.origin || window.location.origin}</p><p className="text-muted-foreground">Клиенты используют API-ключи. Сессии сайтов остаются в Chrome, не в Desktop.</p><p>Версия {desktop?.version || systemInfo?.version || "—"}</p></CardContent></Card>
     <Card><CardHeader><CardTitle className="flex items-center gap-2"><Puzzle className="size-4" />Chrome extension</CardTitle><CardDescription>Наш companion и ваш обычный Chrome</CardDescription></CardHeader>
-      <CardContent className="space-y-3 text-sm"><p className="text-muted-foreground">Установите companion через «Загрузить распакованное расширение» в Chrome. Для localhost подключение автоматическое — без pairing и approve.</p>{desktop && <><p className="break-all font-mono text-xs">{desktop.extensionDir}</p><Button variant="outline" onClick={() => void open(window.chat2api?.openExtensionDirectory)}><Puzzle className="size-4" />Папка расширения</Button></>}</CardContent></Card>
+      <CardContent className="space-y-3 text-sm"><p className="text-muted-foreground">Установите companion через «Загрузить распакованное расширение» в Chrome. Для localhost подключение автоматическое — без pairing и approve.</p>{desktop && <><p className="break-all font-mono text-xs">{desktop.extensionDir}</p><Button variant="outline" onClick={() => void open(window.webchatAI?.openExtensionDirectory)}><Puzzle className="size-4" />Папка расширения</Button></>}</CardContent></Card>
     <Card><CardHeader><CardTitle className="flex items-center gap-2"><FolderOpen className="size-4" />Данные</CardTitle><CardDescription>SQLite, готовые результаты и настройки на этом компьютере</CardDescription></CardHeader>
-      <CardContent className="space-y-3 text-sm">{desktop ? <><p className="break-all font-mono text-xs">{desktop.dataDir}</p><Button variant="outline" onClick={() => void open(window.chat2api?.openDataDirectory)}><FolderOpen className="size-4" />Открыть папку</Button></> : <p className="text-muted-foreground">Папка задаётся в конфигурации запущенного host.</p>}</CardContent></Card>
-    <Card><CardHeader><CardTitle className="flex items-center gap-2"><ShieldCheck className="size-4" />Chat2API</CardTitle><CardDescription>Desktop-first · Chrome extension · API/SDK</CardDescription></CardHeader>
-      <CardContent className="space-y-3 text-sm text-muted-foreground"><p>Chat2API — локальное приложение под лицензией MIT.</p><p>Генерации выполняются в вашем Chrome. Закрытие окна оставляет API в трее; команда «Выйти» останавливает приложение.</p></CardContent></Card>
+      <CardContent className="space-y-3 text-sm">{desktop ? <><p className="break-all font-mono text-xs">{desktop.dataDir}</p><Button variant="outline" onClick={() => void open(window.webchatAI?.openDataDirectory)}><FolderOpen className="size-4" />Открыть папку</Button></> : <p className="text-muted-foreground">Папка задаётся в конфигурации запущенного host.</p>}</CardContent></Card>
+    <Card><CardHeader><CardTitle className="flex items-center gap-2"><ShieldCheck className="size-4" />WebChat AI</CardTitle><CardDescription>Desktop-first · Chrome extension · API/SDK</CardDescription></CardHeader>
+      <CardContent className="space-y-3 text-sm text-muted-foreground"><p>WebChat AI — локальное приложение под лицензией MIT.</p><p>Генерации выполняются в вашем Chrome. Закрытие окна оставляет API в трее; команда «Выйти» останавливает приложение.</p></CardContent></Card>
   </div>;
 }

@@ -72,7 +72,7 @@ async function main() {
     },
     blockedNetworkRequests: 0,
   };
-  const temporary = await mkdtemp(join(tmpdir(), "browser2api-mv3-smoke-"));
+  const temporary = await mkdtemp(join(tmpdir(), "webchat-ai-mv3-smoke-"));
   let context: BrowserContext | undefined;
   let host: Awaited<ReturnType<typeof startApi>> | undefined;
   const denyProxy = createServer((_request, response) => {

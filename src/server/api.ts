@@ -166,7 +166,7 @@ export function createApp({
     );
   });
   app.get("/health/live", (c) =>
-    c.json({ status: "ok", service: "chat2api", version: config.version }),
+    c.json({ status: "ok", service: "webchat-ai", version: config.version }),
   );
   app.get("/health/ready", (c) => {
     const check =
@@ -178,7 +178,7 @@ export function createApp({
     return c.json(
       {
         status: check === "ok" ? "ok" : "error",
-        service: "chat2api",
+        service: "webchat-ai",
         version: config.version,
         database: check,
       },
@@ -464,7 +464,7 @@ export function createApp({
         "Content-Type": mime[ext] ?? "application/octet-stream",
       });
     } catch {
-      return c.json({ service: "chat2api", web_ui: "not_built" }, 503);
+      return c.json({ service: "webchat-ai", web_ui: "not_built" }, 503);
     }
   });
   return app;
@@ -540,7 +540,7 @@ export function publicModel(model: ModelSpec, workers: ModelWorker[], routes?: r
     ...metadata,
     object: "model" as const,
     created: 0,
-    owned_by: providerId === "google_vids" ? "google" : providerId ?? "chat2api",
+    owned_by: providerId === "google_vids" ? "google" : providerId ?? "webchat-ai",
     available: available.length > 0,
     capacity: {
       limit: available.length,

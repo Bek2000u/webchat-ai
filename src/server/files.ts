@@ -33,7 +33,9 @@ export class FileStore {
       ? {
           id: String(row.id),
           requestId: String(row.request_id),
-          path: String(row.path),
+          // Files are named by ID. Resolve against the current data root so a
+          // workspace move does not strand existing absolute paths in SQLite.
+          path: join(this.root, String(row.id)),
           mimeType: String(row.mime_type),
           bytes: Number(row.bytes),
           sha256: String(row.sha256),

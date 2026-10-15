@@ -12,8 +12,8 @@ import { smokeExtensionUI } from "./extension-ui-fixture.js";
 /** Owned isolated Electron fixture. No vendor tabs or real generations. */
 
 const require = createRequire(import.meta.url);
-const dir = await mkdtemp(join(tmpdir(), "chat2api-desktop-smoke-"));
-const output = resolve(".tmp/chat2api-desktop-smoke");
+const dir = await mkdtemp(join(tmpdir(), "webchat-ai-desktop-smoke-"));
+const output = resolve(".tmp/webchat-ai-desktop-smoke");
 await mkdir(output, { recursive: true });
 const extensionOrigin = "chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const env: Record<string, string> = {
@@ -22,14 +22,14 @@ const env: Record<string, string> = {
       (item): item is [string, string] => item[1] !== undefined,
     ),
   ),
-  CHAT2API_DATA_DIR: dir,
-  CHAT2API_SMOKE: "1",
-  CHAT2API_PORT: "0",
+  WEBCHAT_AI_DATA_DIR: dir,
+  WEBCHAT_AI_SMOKE: "1",
+  WEBCHAT_AI_PORT: "0",
   EXTENSION_ORIGINS: extensionOrigin,
   TEXT_PROVIDER_ORDER: "qwen-web,gemini-web",
 };
 delete env.ELECTRON_RUN_AS_NODE;
-const packaged = process.env.CHAT2API_SMOKE_EXECUTABLE;
+const packaged = process.env.WEBCHAT_AI_SMOKE_EXECUTABLE;
 const desktop = await electron.launch({
   executablePath: packaged || require("electron"),
   args: packaged ? [] : [resolve(".")],
@@ -47,6 +47,11 @@ try {
   await page.waitForURL(/\/dashboard$/);
   await page.locator("main h1").waitFor({ timeout: 15000 });
   await page.getByText("Последние запросы", { exact: true }).waitFor();
+  assert.equal(await page.title(), "WebChat AI");
+  assert.equal(await desktop.evaluate(({ app }) => app.getName()), "WebChat AI");
+  const info = await page.evaluate(() => window.webchatAI!.getInfo());
+  assert.equal(info.dataDir, dir);
+  assert.equal(info.version, "0.2.0");
   origin = new URL(page.url()).origin;
   assert.deepEqual(await page.context().cookies(), []);
   assert.equal((await fetch(origin + "/api/accounts")).status, 200);
@@ -237,6 +242,7 @@ try {
       noPairing: true,
       automaticHello: true,
       clientKeys: true,
+      rebrandedDesktopBridge: true,
       singleDispatch: executions,
       configuredAutoRoute: executedModel,
       palettes,

@@ -9,7 +9,7 @@ import { type SDKRequest, type SDKResult } from "../../src/shared/contracts.js";
 
 /** Actual API + Vercel adapter + SQLite; only the Chrome execution is a fixture. */
 export async function fixture() {
-  const dir = await mkdtemp(join(tmpdir(), "chat2api-contract-"));
+  const dir = await mkdtemp(join(tmpdir(), "webchat-ai-contract-"));
   const store = await ApiStore.open({ path: ":memory:" });
   const host = new BrowserDispatcher(store, []),
     files = new FileStore(store.db, dir);

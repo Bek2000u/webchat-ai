@@ -386,7 +386,7 @@ test("fallback waits for a busy alternative without freeing a cancelled account 
 });
 
 test("fresh SQLite uses generic tables and needs no legacy migration", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "chat2api-fresh-store-"));
+  const directory = await mkdtemp(join(tmpdir(), "webchat-ai-fresh-store-"));
   const path = join(directory, "app.sqlite3");
   const store = await ApiStore.open({ path });
   try {

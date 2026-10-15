@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "default_locale": "ru",
-  "name": "Chat2API Companion",
+  "name": "WebChat AI Companion",
   "version": "1.0.0",
-  "description": "Connects your authenticated Chrome profile to Chat2API.",
+  "description": "Connects your authenticated Chrome profile to WebChat AI.",
   "minimum_chrome_version": "116",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxg/mW3dvx2mZScoEhLR7gbkKl1QVhIMku8fKLvfLJ8Xr+FrNhdH5gaB+tPvgVJeCB+jjHd6AD5yRrbJdNr+RIJnPNb1CQiDuKVgu37QgdGd2/Og7OjdFEs9uFS/M1aRnYlycaHYWJbJZttuFVlTQHQRIiCizA5IyKRBMBOVGBrcqDKvloIV4pFnA+44h4KY/BvkaAxm3pF/KPhBFrid7SL0salDLwlB8OueTLAMvF9nkaLnb7qPSRiQXLoand6tVfu3wFcGlL1Wm8aKF/BP8nDD8pinDkiRNT1hv+mIKLTpOvr+dP7cbg8LkguWfMWBDRUcsB6XdNjAbP6sffNQFOwIDAQAB",
   "permissions": [

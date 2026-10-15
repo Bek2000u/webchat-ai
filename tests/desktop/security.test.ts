@@ -1,7 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { desktopPort, isAppUrl, isExternalUrl } from "../../src/desktop/security.js";
+import { desktopDataDirectory, desktopPort, isAppUrl, isExternalUrl } from "../../src/desktop/security.js";
+import { resolve } from "node:path";
 import { DEFAULT_SERVER_ORIGIN } from "../../src/extension/runtime/origin.js";
+
+test("rebrand preserves the existing desktop data folder and explicit overrides", () => {
+  assert.equal(desktopDataDirectory("/app-data"), resolve("/app-data", "Chat2API"));
+  assert.equal(desktopDataDirectory("/app-data", "/existing-custom-data"), resolve("/existing-custom-data"));
+});
 
 test("desktop and extension use the same local API port by default", () => {
   assert.equal(DEFAULT_SERVER_ORIGIN, "http://127.0.0.1:8001");

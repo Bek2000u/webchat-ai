@@ -94,7 +94,7 @@ test("missing timing remains unknown and journal coverage honestly signals the r
 });
 
 test("stats HTTP aggregates the bounded full journal rather than the UI's latest 100 jobs", async () => {
-  const dir = await mkdtemp(join(tmpdir(), "chat2api-stats-"));
+  const dir = await mkdtemp(join(tmpdir(), "webchat-ai-stats-"));
   const store = await ApiStore.open({ path: ":memory:" });
   const host = new BrowserDispatcher(store, []);
   try {

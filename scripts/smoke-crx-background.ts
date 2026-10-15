@@ -10,7 +10,7 @@ import { chromium, type Browser } from "playwright";
 // A real Chromium/MV3 regression, with NO vendor calls. Unlike ordinary
 // Playwright contexts, connectOverCDP(noDefaults) does not silently supply the
 // missing focus override and mask our old transport's background-tab bug.
-const temporary = await mkdtemp(join(tmpdir(), "chat2api-background-crx-"));
+const temporary = await mkdtemp(join(tmpdir(), "webchat-ai-background-crx-"));
 const extension = join(temporary, "extension"), profile = join(temporary, "profile");
 await mkdir(extension); await mkdir(profile);
 await writeFile(join(extension, "manifest.json"), JSON.stringify({
@@ -128,6 +128,6 @@ try {
   await browser?.close();
   if (child.exitCode === null) { child.kill(); await once(child, "exit").catch(() => {}); }
   assert.equal(dirname(temporary), resolve(tmpdir()));
-  assert(basename(temporary).startsWith("chat2api-background-crx-"));
+  assert(basename(temporary).startsWith("webchat-ai-background-crx-"));
   await rm(temporary, { recursive: true, force: true });
 }

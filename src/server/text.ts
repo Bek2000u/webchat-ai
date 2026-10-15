@@ -32,7 +32,7 @@ export function thinkingMode(effort: unknown): ThinkingMode {
 
 export class BrowserLanguageModel implements LanguageModelV4 {
   readonly specificationVersion = "v4";
-  readonly provider = "chat2api";
+  readonly provider = "webchat-ai";
   readonly supportedUrls = {};
   constructor(
     readonly modelId: string,
@@ -80,7 +80,7 @@ export class BrowserLanguageModel implements LanguageModelV4 {
         "unsupported_parameter",
         "stop",
       );
-    const providerOptions = options.providerOptions?.chat2api ?? {};
+    const providerOptions = options.providerOptions?.webchatAI ?? {};
     const effort =
       options.reasoning && options.reasoning !== "provider-default"
         ? options.reasoning
@@ -181,7 +181,7 @@ export class BrowserLanguageModel implements LanguageModelV4 {
         modelId: record.attempts.at(-1)?.model ?? this.modelId,
       },
       providerMetadata: {
-        chat2api: { requestId: record.id, delivery: "buffered", resolvedModel: record.attempts.at(-1)?.model ?? this.modelId },
+        webchatAI: { requestId: record.id, delivery: "buffered", resolvedModel: record.attempts.at(-1)?.model ?? this.modelId },
       },
     };
   }
@@ -389,7 +389,7 @@ export function createTextEndpoints(host: BrowserDispatcher) {
       abortSignal: request.signal,
       reasoning: undefined,
       providerOptions: {
-        chat2api: {
+        webchatAI: {
           reasoningEffort:
             body.reasoning?.effort ?? body.reasoning_effort ?? null,
         },

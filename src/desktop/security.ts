@@ -1,4 +1,11 @@
 
+import { resolve } from "node:path";
+
+/** Keep the established data directory independent of the display name. */
+export function desktopDataDirectory(appData: string, configured?: string): string {
+  return configured ? resolve(configured) : resolve(appData, "Chat2API");
+}
+
 /** Native shell policy. Provider sessions never enter Electron. */
 export function isExternalUrl(value: string): boolean {
   try {

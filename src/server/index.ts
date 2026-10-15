@@ -12,7 +12,7 @@ import { loadSettings } from "./settings.js";
 
 export async function startApi(env: NodeJS.ProcessEnv = process.env) {
   if (!["127.0.0.1", "::1"].includes(env.HOST || "127.0.0.1"))
-    throw new Error("Chat2API local host must listen on a loopback address");
+    throw new Error("WebChat AI local host must listen on a loopback address");
   const dataDir = resolve(env.DATA_DIR || "data"),
     origins = (
       env.EXTENSION_ORIGINS ||
@@ -86,7 +86,7 @@ if (parent) {
         process.exit(0);
       }
     } catch (error) {
-      parent.postMessage({ type: "error", message: "Chat2API local API could not start; check the port and data directory", ...(process.env.CHAT2API_SMOKE === "1" ? { diagnostic: error instanceof Error ? error.message : "Startup failed" } : {}) });
+      parent.postMessage({ type: "error", message: "WebChat AI local API could not start; check the port and data directory", ...(process.env.WEBCHAT_AI_SMOKE === "1" ? { diagnostic: error instanceof Error ? error.message : "Startup failed" } : {}) });
       await instance?.close().catch(() => {});
       process.exit(1);
     }
@@ -101,7 +101,7 @@ if (parent) {
     }),
     address = instance.server.address();
   console.log(
-    `Chat2API API listening on ${typeof address === "object" && address ? address.port : "configured address"}`,
+    `WebChat AI API listening on ${typeof address === "object" && address ? address.port : "configured address"}`,
   );
   for (const signal of ["SIGINT", "SIGTERM"] as const)
     process.on(signal, () => {

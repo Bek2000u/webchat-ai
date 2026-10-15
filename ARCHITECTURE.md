@@ -1,4 +1,4 @@
-# Архитектура Chat2API
+# Архитектура WebChat AI
 
 Единое целевое устройство. Что уже есть и что предстоит — в [PLAN.md](PLAN.md).
 Первый API hardcut реализован; новые провайдеры и UI image adapters ещё в плане.
@@ -24,7 +24,7 @@ pairing/approve. Проверка extension origin и credential зарегис�
 
 Основа — существующие `src/providers/types.ts`, `docs/PROVIDER_SDK_POLICY.md`,
 `docs/MEDIA_HTTP_API.md` и endpoint-схемы `forge/hebo-gateway` (`@hebo-ai/gateway`).
-Берём единый контракт, а не запускаем ещё один gateway/proxy перед Chat2API.
+Берём единый контракт, а не запускаем ещё один gateway/proxy перед WebChat AI.
 
 | Операция | Целевой endpoint и формат |
 | --- | --- |
@@ -39,7 +39,7 @@ pairing/approve. Проверка extension origin и credential зарегис�
 `{ error: { message, type, code, param } }`, корреляция через `x-request-id`.
 Media options/artifacts сохраняются в `provider_options` / `provider_metadata`.
 Публичная speech-модель — `gemini-3.8-flash-tts` / `Gemini 3.8 Flash TTS`,
-`owned_by: "google"`. Google Vids — внутренний browser provider Chat2API:
+`owned_by: "google"`. Google Vids — внутренний browser provider WebChat AI:
 его routing ID остаётся в локальном `/api/models`, а `providerId` не выводится
 в публичном `/v1/models` и карточке `/v1/models/:id`.
 Каталог голосов — `/v1/audio/voices?model=gemini-3.8-flash-tts&language=ru`.
@@ -68,7 +68,7 @@ Preview — готовые публичные WAV Google Vids на
 остаётся для профилей, ключей, истории и настроек, не для второго generation API.
 Playground использует тот же generation API, что внешние клиенты.
 
-Chat2API самостоятельный: собственные handlers и runtime validation в `src/server`.
+WebChat AI самостоятельный: собственные handlers и runtime validation в `src/server`.
 Hebo — только reference форматов, без dependency/imports, копирования его кода
 и дополнительного HTTP hop. Публичные типы SDK импортируются из стандартных
 пакетов; browser/UI DTO остаются своими. Сам Hebo здесь не меняется.

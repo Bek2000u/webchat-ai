@@ -181,7 +181,7 @@ export async function prepareGoogleVidsNativeTransport(
   if (state.observerVersion !== NATIVE_OBSERVER_VERSION) {
     throw driverError({
       code: "GOOGLE_VIDS_EXTENSION_OUTDATED",
-      message: "Reload Browser Companion, then retry Google Vids",
+      message: "Reload WebChat AI Companion, then retry Google Vids",
       submitted: false,
     });
   }

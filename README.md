@@ -1,4 +1,7 @@
-# Chat2API
+# WebChat AI
+
+Репозиторий: [Bek2000u/webchat-ai](https://github.com/Bek2000u/webchat-ai).
+Рабочая папка: `C:\Users\Bek\github\forge\webchat-ai`.
 
 Локальное desktop-приложение: API поверх AI-сайтов в обычном Chrome пользователя.
 Наше расширение выполняет запросы, Electron даёт окно/tray, а локальный сервер —
@@ -95,18 +98,18 @@ Legacy-миграции нет; прежние dev-данные перед hardc
 ## Внешние клиенты
 
 Base URL: `http://127.0.0.1:8001/v1`. Авторизация: `Bearer <API key>`.
-Специальный Chat2API SDK не требуется:
+Специальный WebChat AI SDK не требуется:
 
 ```ts
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
-const chat2api = createOpenAI({
+const webchatAI = createOpenAI({
   baseURL: 'http://127.0.0.1:8001/v1',
-  apiKey: process.env.CHAT2API_API_KEY!,
+  apiKey: process.env.WEBCHAT_AI_API_KEY!,
 });
 const result = await generateText({
-  model: chat2api.chat('chatgpt-web'),
+  model: webchatAI.chat('chatgpt-web'),
   prompt: 'Привет!',
   maxRetries: 0,
 });
@@ -146,7 +149,7 @@ Vids проверяется автоматически при подключен
 недоступны для Vids; расширение и «Аккаунты» показывают причину. Проверка повторяется
 перед генерацией. Статические preview голосов доступны независимо от тарифа.
 
-Речь `gemini-3.8-flash-tts` — WAV, speed 1. Google Vids используется внутри Chat2API;
+Речь `gemini-3.8-flash-tts` — WAV, speed 1. Google Vids используется внутри WebChat AI;
 публичное название модели — `Gemini 3.8 Flash TTS`, владелец — `google`.
 Текстовые SSE buffered: завершённый ответ сайта,
 не live tokens. Неизвестный token usage возвращается как `null`.
@@ -178,6 +181,25 @@ npm run dev
 
 Загрузить `dist/extension-dev/chrome-mv3-dev`. `npm run dev:web` запускает Vite
 отдельно; `npm run start:server` — собранный API без Electron.
+
+### Данные и переименование
+
+При переименовании Chat2API в WebChat AI сохраняются `data/`, база и media,
+ключ подписи файлов, UUID/token профилей и public keys расширений.
+ID обычного companion — `pnamggpmjbeoohafaokfcjhpdmijmmda`,
+dev — `epmfnjjinilkfldoafibcgkpenbhlidm`. Не удаляйте установленное расширение:
+это удалит его Chrome storage. При переносе обновите путь существующей установки
+через «Загрузить распакованное расширение» с тем же ID.
+
+Desktop продолжает использовать прежнюю папку `Chat2API` внутри Electron appData,
+чтобы новое имя не создало пустую базу. `WEBCHAT_AI_DATA_DIR` задаёт другой путь;
+прежний `CHAT2API_DATA_DIR` по-прежнему учитывается для существующих установок.
+Локальный API из исходников использует `data/`. Старые технические storage keys
+профилей, темы и sidebar сохранены намеренно, не являются названием продукта.
+Media читаются по ID относительно текущей папки `data/files`, поэтому перенос
+не требует переписывать прежние абсолютные пути в БД.
+Проверка переноса ID/storage без пользовательских профилей:
+`npx tsx scripts/smoke-extension-relocation.ts` (после сборки обеих extensions).
 
 Проверки: `npm run typecheck`, `npm test`, `npm run build`.
 Отдельно: `smoke:desktop`, `smoke:extension`, `smoke:crx`; они не заменяют live

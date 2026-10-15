@@ -455,7 +455,7 @@ export class FlowService {
       "jHPbke",
       [
         "projects/*",
-        [null, ["Browser2API " + new Date().toISOString()]],
+        [null, ["WebChat AI " + new Date().toISOString()]],
         [null, 22],
       ],
       context.signal,

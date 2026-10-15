@@ -11,7 +11,7 @@ import { startApi } from "../../src/server/index.js";
 
 const extensionOrigin = "chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 async function directory(t: test.TestContext) {
-  const dir = await mkdtemp(join(tmpdir(), "chat2api-settings-"));
+  const dir = await mkdtemp(join(tmpdir(), "webchat-ai-settings-"));
   t.after(() => rm(dir, { recursive: true, force: true }));
   return dir;
 }
@@ -23,7 +23,7 @@ async function until(check: () => boolean) {
   }
 }
 async function runtime(t: test.TestContext, order = "gemini-web,qwen-web") {
-  const dir = await mkdtemp(join(tmpdir(), "chat2api-settings-api-"));
+  const dir = await mkdtemp(join(tmpdir(), "webchat-ai-settings-api-"));
   const instance = await startApi({
     DATA_DIR: dir, HOST: "127.0.0.1", PORT: "0",
     EXTENSION_ORIGINS: extensionOrigin,

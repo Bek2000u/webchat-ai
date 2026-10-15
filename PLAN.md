@@ -1,4 +1,4 @@
-# План hardcut Chat2API
+# План hardcut WebChat AI
 
 Основа: [ARCHITECTURE.md](ARCHITECTURE.md). Это план, не отчёт о готовых интеграциях.
 Без SaaS, admin/pairing, второго сервера и recovery Chrome jobs. Donors — read-only.
