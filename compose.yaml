@@ -1,0 +1,17 @@
+services:
+  webchat-ai:
+    build: .
+    image: webchat-ai:local
+    restart: unless-stopped
+    environment:
+      WEBCHAT_AI_MODE: server
+      SERVER_TOKEN: ${SERVER_TOKEN:?Set SERVER_TOKEN in .env}
+      EXTENSION_ORIGINS: ${EXTENSION_ORIGINS:-chrome-extension://opcdjnhnokdpibdhglkjfohgnjokakfp}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-}
+    ports:
+      - "127.0.0.1:${PORT:-8001}:8001"
+    volumes:
+      - webchat-ai-data:/app/data
+
+volumes:
+  webchat-ai-data:

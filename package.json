@@ -1,0 +1,158 @@
+{
+  "name": "webchat-ai",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "OpenAI-compatible API powered by AI websites in Chrome, for desktop and self-hosted servers",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bek2000u/webchat-ai.git"
+  },
+  "homepage": "https://github.com/Bek2000u/webchat-ai#readme",
+  "bugs": {
+    "url": "https://github.com/Bek2000u/webchat-ai/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Bek2000u",
+    "url": "https://github.com/Bek2000u"
+  },
+  "main": "dist/desktop/main.cjs",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "tsx src/server/index.ts --dev",
+    "dev:web": "vite",
+    "dev:extension": "wxt src/extension",
+    "dev:desktop": "npm run build && electron .",
+    "start": "electron .",
+    "start:server": "node dist/server/index.mjs",
+    "build": "npm run build:server && npm run build:web && npm run build:extension && npm run build:extension:server && npm run build:desktop",
+    "build:server": "node scripts/build.mjs server",
+    "build:web": "vite build",
+    "build:icons": "node scripts/build-icons.mjs",
+    "build:crx": "node scripts/extension/build-playwright.mjs",
+    "build:extension": "npm run build:crx && node scripts/extension/prepare-wxt.mjs && node scripts/extension/build-companion.mjs desktop",
+    "build:extension:dev": "npm run build:crx && node scripts/extension/prepare-wxt.mjs && node scripts/extension/build-companion.mjs dev",
+    "build:desktop": "node scripts/build.mjs desktop",
+    "typecheck": "npm run build:crx && tsc --noEmit",
+    "pretest": "npm run build:crx",
+    "test": "tsx --test tests/**/*.test.ts tests/extension/playwright/*.test.ts",
+    "smoke:desktop": "tsx scripts/smoke-desktop.ts",
+    "smoke:extension": "tsx scripts/smoke-mv3.ts",
+    "smoke:crx": "tsx scripts/smoke-crx.ts",
+    "smoke:live": "tsx scripts/smoke-live.ts",
+    "pack:desktop": "npm run build && electron-builder --dir",
+    "dist:win": "npm run build && electron-builder --win nsis --publish never",
+    "build:extension:server": "npm run build:crx && node scripts/extension/prepare-wxt.mjs && node scripts/extension/build-companion.mjs server"
+  },
+  "dependencies": {
+    "@ai-sdk/provider": "^4.0.27",
+    "@hono/node-server": "^1.19.0",
+    "@tanstack/ai": "0.69.0",
+    "@webext-core/messaging": "^4.0.0",
+    "ai": "^7.0.138",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "electron-updater": "6.8.9",
+    "hono": "^4.9.0",
+    "i18next": "26.5.6",
+    "lucide-react": "^0.475.0",
+    "radix-ui": "^1.6.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "17.1.3",
+    "react-router-dom": "^7.18.4",
+    "socket.io": "^4.8.4",
+    "socket.io-client": "^4.8.4",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.6.0",
+    "tw-animate-css": "^1.4.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@ai-sdk/openai": "^4.0.92",
+    "@tailwindcss/vite": "^4.3.2",
+    "@tanstack/ai-openai": "^0.30.0",
+    "@types/chrome": "^0.3.5",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "electron": "44.7.2",
+    "electron-builder": "26.15.3",
+    "esbuild": "^0.28.1",
+    "linkedom": "0.18.13",
+    "openai": "^7.32.0",
+    "playwright": "1.64.1",
+    "playwright-core": "1.64.1",
+    "tailwindcss": "^4.3.2",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vite": "^6.0.0",
+    "wxt": "^0.21.4"
+  },
+  "build": {
+    "appId": "uz.sidekick.webchat-ai",
+    "productName": "WebChat AI",
+    "copyright": "Copyright (c) 2026 Bek",
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    },
+    "files": [
+      "dist/desktop/**/*",
+      "dist/server/**/*",
+      "resources/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/web",
+        "to": "web"
+      },
+      {
+        "from": "dist/extension/chrome-mv3",
+        "to": "extension"
+      },
+      {
+        "from": "LICENSE",
+        "to": "LICENSE"
+      }
+    ],
+    "asar": true,
+    "win": {
+      "target": "nsis",
+      "icon": "resources/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "WebChat AI",
+      "installerIcon": "resources/icon.ico",
+      "uninstallerIcon": "resources/icon.ico",
+      "installerHeaderIcon": "resources/icon.ico",
+      "license": "LICENSE"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "resources/icon.png",
+      "category": "Utility"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.utilities"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Bek2000u",
+        "repo": "webchat-ai",
+        "releaseType": "release"
+      }
+    ],
+    "artifactName": "WebChat-AI-${version}-${arch}.${ext}"
+  }
+}
