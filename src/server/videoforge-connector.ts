@@ -210,6 +210,7 @@ export class VideoForgeConnector {
     } catch { return Promise.resolve(fail("invalid_headers", "Invalid public API headers")); }
     const fingerprint = createHash("sha256").update(JSON.stringify([request.method, request.path, [...headers.entries()].sort()])).update(body).digest("hex");
     const key = JSON.stringify([scope, request.id]);
+    const recoveryOnly = Object.entries(request.headers).some(([name, value]) => name.toLowerCase() === "x-videoforge-recovery-only" && value === "1");
     if (request.method === "POST") {
       const row = this.options.db.prepare("SELECT fingerprint,response FROM videoforge_connector_requests WHERE scope=? AND request_id=?").get(scope, request.id) as JournalRow | undefined;
       if (row) {
@@ -217,6 +218,7 @@ export class VideoForgeConnector {
         if (row.response) return Promise.resolve(JSON.parse(row.response) as RelayResult);
         return this.inFlight.get(key)?.promise ?? Promise.resolve(fail("outcome_unknown", "The original local API outcome is unknown; it was not submitted again"));
       }
+      if (recoveryOnly) return Promise.resolve(fail("outcome_unknown", "No original local request exists; recovery did not start a generation"));
       // A durable claim precedes every side-effecting local API dispatch.
       this.options.db.prepare("INSERT INTO videoforge_connector_requests VALUES (?,?,?,?,?)").run(scope, request.id, fingerprint, null, new Date().toISOString());
     } else if (this.inFlight.has(key)) return Promise.resolve(fail("request_conflict", "Request ID is already executing"));

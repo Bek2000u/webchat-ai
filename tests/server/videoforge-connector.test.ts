@@ -68,6 +68,38 @@ test("authenticates once, relays real native Hono API, shares pending POST and r
   } finally { await f.close(); }
 });
 
+test("recovery-only requests read existing results and never claim or dispatch missing work", async () => {
+  let dispatches = 0;
+  const f = await setup({ fetch: (request) => {
+    dispatches++;
+    assert.equal(request.headers.get("x-videoforge-recovery-only"), null);
+    return Response.json({ original: true });
+  } });
+  try {
+    const missing = wire("lost-before-client", "POST", "/v1/chat/completions", prompt);
+    Object.assign(missing.headers, { "X-VideoForge-Recovery-Only": "1" });
+    f.socket.message(missing);
+    await until(() => f.socket.sent.length === 2);
+    assert.equal(f.socket.sent[1].code, "outcome_unknown");
+    assert.equal(dispatches, 0);
+    assert.equal(f.store.db.prepare("SELECT response FROM videoforge_connector_requests WHERE request_id=?").get(missing.id), undefined);
+
+    const original = wire("saved-before-expiry", "POST", "/v1/chat/completions", prompt);
+    f.socket.message(original);
+    await until(() => f.socket.sent.length === 3);
+    const result = f.socket.sent[2];
+    const recovery = { ...original, headers: { ...original.headers, "x-videoforge-recovery-only": "1" } };
+    f.socket.message(recovery);
+    await until(() => f.socket.sent.length === 4);
+    assert.deepEqual(f.socket.sent[3], result);
+    assert.equal(dispatches, 1);
+    f.socket.message({ ...recovery, body: Buffer.from(JSON.stringify({ ...prompt, model: "changed" })).toString("base64") });
+    await until(() => f.socket.sent.length === 5);
+    assert.equal(f.socket.sent[4].code, "request_conflict");
+    assert.equal(dispatches, 1);
+  } finally { await f.close(); }
+});
+
 test("new connector instance replays SQLite response and refuses a persisted started claim", async () => {
   const f = await setup();
   let next: VideoForgeConnector | undefined;
